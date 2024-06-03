@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import ErrorMessage from "./components/common/ErrorMessage";
 import Loader from "./components/common/Loader";
 import Box from "./components/layout/Box";
@@ -21,6 +23,8 @@ export default function App() {
 
   const [watched, setWatched] = useLocalStorageState([], "watched");
 
+  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (selectedId === id ? null : id));
   }
@@ -40,6 +44,16 @@ export default function App() {
   return (
     <>
       <Navbar>
+        {!isAuthenticated ? (
+          <button onClick={() => loginWithRedirect()}>Log in</button>
+        ) : (
+          <>
+            <button onClick={() => logout({ returnTo: window.location.origin })}>
+              Log out
+            </button>
+            <span>Welcome, {user.name}</span>
+          </>
+        )}
         <Search
           query={query}
           setQuery={setQuery}
