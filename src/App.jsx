@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import ErrorMessage from "./components/common/ErrorMessage";
@@ -45,7 +44,9 @@ export default function App() {
     <>
       <Navbar>
         {!isAuthenticated ? (
-          <button onClick={() => loginWithRedirect()}>Log in</button>
+          <button onClick={() => loginWithRedirect({ connection: 'google-oauth2' })}>
+            Log in with Google
+          </button>
         ) : (
           <>
             <button onClick={() => logout({ returnTo: window.location.origin })}>
